@@ -1,0 +1,18 @@
+version: "3.4"
+
+services:
+  postgresql:
+    container_name: desafio_postgresql
+    image: postgres:13.2
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: desafio
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+    volumes:
+      - desafio_postgresql:/var/lib/postgresql/data
+
+volumes:
+  desafio_postgresql:

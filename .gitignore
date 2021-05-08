@@ -1,0 +1,17 @@
+# Coverage
+.coverage
+.coverage.*
+htmlcov/
+
+# Python
+.cache
+.mypy_cache/
+.pytest_cache/
+__pycache__/
+*.pyc
+
+# IDE
+.idea/
+
+# Build
+desafio.egg-info/
