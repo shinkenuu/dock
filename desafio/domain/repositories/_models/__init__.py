@@ -1,15 +1,10 @@
 from abc import ABCMeta
 from typing import Any, List, Optional
 
-from sqlalchemy.exc import IntegrityError
-
 from desafio.clients.orm import LocalSession, Session
 from desafio.domain.repositories import IEntityRepository
 from desafio.domain.repositories._models._base import Base
-from desafio.domain.repositories._models.exceptions import (
-    DuplicatedModel,
-    ModelNotFound,
-)
+from desafio.domain.repositories._models.exceptions import ModelNotFound
 
 
 class ModelRepository(ABCMeta, IEntityRepository):
@@ -48,11 +43,8 @@ class ModelRepository(ABCMeta, IEntityRepository):
     def create(cls, entity: Any, session: Session = None) -> Any:
         with LocalSession(session) as session:
             model = cls.model(**entity.dict())
-            try:
-                session.add(model)
-                session.commit()
-            except IntegrityError as error:
-                raise DuplicatedModel(error)
+            session.add(model)
+            session.commit()
             return cls.entity.from_orm(model)
 
     @classmethod

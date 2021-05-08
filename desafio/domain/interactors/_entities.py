@@ -1,18 +1,15 @@
 from datetime import datetime
-from decimal import Decimal
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, condecimal
 
 
 class Account(BaseModel):
     id: Optional[int]
-    balance: Decimal
-    max_daily_withdrawal: Optional[Decimal]
+    balance: condecimal(max_digits=10, decimal_places=2)  # type: ignore
+    max_daily_withdrawal: condecimal(max_digits=10, decimal_places=2) = None  # type: ignore
 
     is_active: Optional[bool]
-    type: int
-
     created_at: datetime
 
     person_id: int

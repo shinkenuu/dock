@@ -1,25 +1,28 @@
 from datetime import datetime
-from decimal import Decimal
 from typing import Optional
 
-from pydantic import BaseModel, StrictBool
+from pydantic import BaseModel, condecimal, StrictBool
 
 
 class _Account(BaseModel):
-    balance: Decimal
-    type: int  # Ain't this supposed to be an Enum?
+    balance: condecimal(max_digits=10, decimal_places=2)  # type: ignore
     person_id: int
+
+    max_daily_withdrawal: condecimal(max_digits=10, decimal_places=2) = None  # type: ignore
+    is_active: Optional[StrictBool]
 
 
 class ExposableAccount(_Account):
     id: int
-    max_daily_withdrawal: Optional[Decimal]
-    is_active: Optional[StrictBool]
+    created_at: datetime
 
 
 class CreatableAccount(_Account):
-    max_daily_withdrawal: Optional[Decimal]
-    is_active: Optional[StrictBool]
+    pass
+
+
+class UpdatableAccount(BaseModel):
+    is_active: StrictBool
 
 
 class Person(BaseModel):

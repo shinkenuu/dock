@@ -7,7 +7,6 @@ from sqlalchemy import (
     Date,
     DateTime,
     ForeignKey,
-    Integer,
     Numeric,
     String,
 )
@@ -23,7 +22,7 @@ class Account(Base, InternalIdentifierMixin):
     max_daily_withdrawal = Column(Numeric(10, 2))
 
     is_active = Column(Boolean)
-    type = Column(Integer)
+    # type = Column(Integer) # This is not used anywhere, still were at challenge description
 
     created_at = Column(DateTime, default=datetime.utcnow)
 
