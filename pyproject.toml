@@ -22,9 +22,6 @@ pytest = "^6.2.4"
 pytest-mock = "^3.6.1"
 freezegun = "^1.1.0"
 
-[tool.poetry.scripts]
-populate_people = "desafio.entrypoints.populate_people:create_people"
-
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
