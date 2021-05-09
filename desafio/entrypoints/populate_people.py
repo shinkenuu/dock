@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from desafio.domain.interactors.accounts import PersonInteractor
+from desafio.domain.controllers.accounts import create, CreatableAccount
 from desafio.logger import get_logger
 
 LOGGER = get_logger()
@@ -28,7 +28,8 @@ def load_people():
 def create_people():
     for person in load_people():
         try:
-            created_person = PersonInteractor.create(**person)
+            creatable_person = CreatableAccount(**person)
+            created_person = create(creatable_person)
             LOGGER.debug(created_person)
 
         except Exception as error:

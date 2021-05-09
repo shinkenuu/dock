@@ -125,7 +125,7 @@ python = "<3.8"
 version = "*"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Let your Python tests travel through time"
 name = "freezegun"
 optional = false
@@ -515,7 +515,7 @@ docs = ["sphinx", "jaraco.packaging (>=8.2)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pytest-cov", "pytest-enabler", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy"]
 
 [metadata]
-content-hash = "26de2dcf852ebffd60f170823af78f41788b46fb6ac247c28a0b97f25bd77d5a"
+content-hash = "d7772de58233c0e01973135a930f4411d1997c3908b9f1fa665a40dbce9c18c0"
 lock-version = "1.0"
 python-versions = "^3.7"
 

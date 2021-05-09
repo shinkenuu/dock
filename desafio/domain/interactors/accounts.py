@@ -72,11 +72,11 @@ class AccountInteractor(IInteractorFindOne, IInteractorCreate, IInteractorUpdate
     repository = AccountRepository
 
     @classmethod
-    def _find_entity(cls, *args, **kwargs):
-        found_entity = cls.repository.get_one(*args, **kwargs)
+    def _find_entity(cls, id: int, *args, **kwargs):
+        found_entity = cls.repository.get_one(id=id, *args, **kwargs)
 
         if not found_entity:
-            raise AccountNotFound(**kwargs)
+            raise AccountNotFound(id=id)
 
         return found_entity
 

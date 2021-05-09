@@ -7,9 +7,6 @@ from desafio.domain.controllers.schemas.accounts import (
 from desafio.domain.controllers import accounts as account_controllers
 from desafio.domain.exceptions.accounts import AccountNotFound, PersonNotFound
 from desafio.entrypoints.fastapi.main import app
-from desafio.logger import get_logger
-
-LOGGER = get_logger()
 
 
 @app.post("/accounts", status_code=201)  # type: ignore

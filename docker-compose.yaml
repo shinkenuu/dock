@@ -1,6 +1,15 @@
 version: "3.4"
 
 services:
+  app:
+    container_name: desafio_app
+    build: .
+    ports:
+      - "80:80"
+    environment:
+      DATABASE_URL: "postgresql://username:password@postgresql/desafio"
+      PORT: 80
+
   postgresql:
     container_name: desafio_postgresql
     image: postgres:13.2

@@ -1,0 +1,1040 @@
+{
+	"info": {
+		"_postman_id": "91485b7e-b29f-446e-a7ce-a4fb52d3b8d5",
+		"name": "Desafio",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Transactions",
+			"item": [
+				{
+					"name": "Withdrawal",
+					"item": [
+						{
+							"name": "Withdrawal",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const moment = require(\"moment\");",
+											"",
+											"// Status code",
+											"",
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201); }",
+											");",
+											"",
+											"// Body",
+											"var jsonData = pm.response.json(); ",
+											"pm.test(\"Verify id\", function () { ",
+											"    pm.expect(typeof(jsonData.id)).is.equal(\"number\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Verify value\", function () { ",
+											"    pm.expect(jsonData.value).is.equal(-15.6);",
+											"});",
+											"",
+											"pm.test(\"Verify processed_at\", function () { ",
+											"    pm.expect( moment(jsonData.processed_at, \"YYYY-MM-DD hh:mm:ss.SSS\").isValid() ).to.be.true;",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"value\": -15.6\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{address}}/accounts/{{account_id}}/transactions",
+									"protocol": "http",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"accounts",
+										"{{account_id}}",
+										"transactions"
+									]
+								},
+								"description": "This request takes for granted:\n1. there is not a company named \"Newton Labs\";\n2. industry named \"Information Technology\" is already known by the API;\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Withdrawal - account not found",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Status code",
+											"",
+											"pm.test(\"Status code is 404\", function () {",
+											"    pm.response.to.have.status(404); }",
+											");",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"value\": -15.6\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{address}}/accounts/532453253254/transactions",
+									"protocol": "http",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"accounts",
+										"532453253254",
+										"transactions"
+									]
+								},
+								"description": "This request takes for granted:\n1. there is not a company named \"Newton Labs\";\n2. industry named \"Information Technology\" is already known by the API;\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Withdrawal - inactive account",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Status code",
+											"",
+											"pm.test(\"Status code is 422\", function () {",
+											"    pm.response.to.have.status(422); }",
+											");",
+											"",
+											"",
+											"// Body",
+											"var jsonData = pm.response.json(); ",
+											"pm.test(\"Verify error message\", function () { ",
+											"    const accountId = pm.environment.get('inactive_account_id');",
+											"",
+											"    const expectedErrorMessage = \"Account \" + accountId + \" is inactive\"",
+											"",
+											"    pm.expect(jsonData.detail).is.equal(expectedErrorMessage);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"value\": -15.6\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{address}}/accounts/{{inactive_account_id}}/transactions",
+									"protocol": "http",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"accounts",
+										"{{inactive_account_id}}",
+										"transactions"
+									]
+								},
+								"description": "This request takes for granted:\n1. there is not a company named \"Newton Labs\";\n2. industry named \"Information Technology\" is already known by the API;\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Withdrawal - value zero",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Status code",
+											"",
+											"pm.test(\"Status code is 422\", function () {",
+											"    pm.response.to.have.status(422); }",
+											");",
+											"",
+											"",
+											"// Body",
+											"var jsonData = pm.response.json(); ",
+											"pm.test(\"Verify error message\", function () { ",
+											"    const expectedErrorMessage = \"Transaction value must not be 0\";",
+											"",
+											"    pm.expect(jsonData.detail).is.equal(expectedErrorMessage);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"value\": 0.0\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{address}}/accounts/{{inactive_account_id}}/transactions",
+									"protocol": "http",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"accounts",
+										"{{inactive_account_id}}",
+										"transactions"
+									]
+								},
+								"description": "This request takes for granted:\n1. there is not a company named \"Newton Labs\";\n2. industry named \"Information Technology\" is already known by the API;\n"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Deposit",
+					"item": [
+						{
+							"name": "Deposit",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const moment = require(\"moment\");",
+											"",
+											"// Status code",
+											"",
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201); }",
+											");",
+											"",
+											"// Body",
+											"var jsonData = pm.response.json(); ",
+											"pm.test(\"Verify id\", function () { ",
+											"    pm.expect(typeof(jsonData.id)).is.equal(\"number\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Verify value\", function () { ",
+											"    pm.expect(jsonData.value).is.equal(100.94);",
+											"});",
+											"",
+											"pm.test(\"Verify processed_at\", function () { ",
+											"    pm.expect( moment(jsonData.processed_at, \"YYYY-MM-DD hh:mm:ss.SSS\").isValid() ).to.be.true;",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"value\": 100.94\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{address}}/accounts/{{account_id}}/transactions",
+									"protocol": "http",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"accounts",
+										"{{account_id}}",
+										"transactions"
+									]
+								},
+								"description": "This request takes for granted:\n1. there is not a company named \"Newton Labs\";\n2. industry named \"Information Technology\" is already known by the API;\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Deposit - account not found",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Status code",
+											"",
+											"pm.test(\"Status code is 404\", function () {",
+											"    pm.response.to.have.status(404); }",
+											");",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"value\": 100.94\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{address}}/accounts/532453253254/transactions",
+									"protocol": "http",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"accounts",
+										"532453253254",
+										"transactions"
+									]
+								},
+								"description": "This request takes for granted:\n1. there is not a company named \"Newton Labs\";\n2. industry named \"Information Technology\" is already known by the API;\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Deposit - inactive account",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Status code",
+											"",
+											"pm.test(\"Status code is 422\", function () {",
+											"    pm.response.to.have.status(422); }",
+											");",
+											"",
+											"",
+											"// Body",
+											"var jsonData = pm.response.json(); ",
+											"pm.test(\"Verify error message\", function () { ",
+											"    const accountId = pm.environment.get('inactive_account_id');",
+											"",
+											"    const expectedErrorMessage = \"Account \" + accountId + \" is inactive\"",
+											"",
+											"    pm.expect(jsonData.detail).is.equal(expectedErrorMessage);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"value\": 100.94\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{address}}/accounts/{{inactive_account_id}}/transactions",
+									"protocol": "http",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"accounts",
+										"{{inactive_account_id}}",
+										"transactions"
+									]
+								},
+								"description": "This request takes for granted:\n1. there is not a company named \"Newton Labs\";\n2. industry named \"Information Technology\" is already known by the API;\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Deposit - value zero",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Status code",
+											"",
+											"pm.test(\"Status code is 422\", function () {",
+											"    pm.response.to.have.status(422); }",
+											");",
+											"",
+											"",
+											"// Body",
+											"var jsonData = pm.response.json(); ",
+											"pm.test(\"Verify error message\", function () { ",
+											"    const expectedErrorMessage = \"Transaction value must not be 0\";",
+											"",
+											"    pm.expect(jsonData.detail).is.equal(expectedErrorMessage);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"value\": 0.0\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{address}}/accounts/{{inactive_account_id}}/transactions",
+									"protocol": "http",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"accounts",
+										"{{inactive_account_id}}",
+										"transactions"
+									]
+								},
+								"description": "This request takes for granted:\n1. there is not a company named \"Newton Labs\";\n2. industry named \"Information Technology\" is already known by the API;\n"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "List Transactions",
+					"item": [
+						{
+							"name": "List transactions",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Status code",
+											"",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200); }",
+											");",
+											"",
+											"// Body",
+											"var jsonData = pm.response.json(); ",
+											"",
+											"pm.test(\"Verify array\", function () { ",
+											"    pm.expect(jsonData.length).is.greaterThan(0);",
+											"});",
+											"",
+											"const firstTransaction = jsonData[0];",
+											"",
+											"pm.test(\"Verify transaction.id\", function () { ",
+											"    pm.expect(typeof(firstTransaction.id)).is.equal(\"number\");",
+											"});",
+											"",
+											"pm.test(\"Verify transaction.value\", function () { ",
+											"    pm.expect(typeof(firstTransaction.value)).is.equal(\"number\");",
+											"});",
+											"",
+											"pm.test(\"Verify transaction.processed_at\", function () { ",
+											"    pm.expect(typeof(firstTransaction.processed_at)).is.equal(\"string\");",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{address}}/accounts/{{account_id}}/transactions",
+									"protocol": "http",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"accounts",
+										"{{account_id}}",
+										"transactions"
+									]
+								},
+								"description": "This request takes for granted:\n1. there is not a company named \"Newton Labs\";\n2. industry named \"Information Technology\" is already known by the API;\n"
+							},
+							"response": []
+						},
+						{
+							"name": "List transactions - account not found",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Status code",
+											"",
+											"pm.test(\"Status code is 404\", function () {",
+											"    pm.response.to.have.status(404); }",
+											");",
+											"",
+											"// Body",
+											"var jsonData = pm.response.json(); ",
+											"",
+											"pm.test(\"Verify error message\", function () { ",
+											"    const expectedErrorMessage = \"Account not found by {'id': 3123123213}\";",
+											"    pm.expect(jsonData.detail).is.equal(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{address}}/accounts/3123123213/transactions",
+									"protocol": "http",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"accounts",
+										"3123123213",
+										"transactions"
+									]
+								},
+								"description": "This request takes for granted:\n1. there is not a company named \"Newton Labs\";\n2. industry named \"Information Technology\" is already known by the API;\n"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Query transactions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Status code",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200); }",
+									");",
+									"",
+									"// Body",
+									"var jsonData = pm.response.json(); ",
+									"",
+									"pm.test(\"Verify array\", function () { ",
+									"    pm.expect(jsonData.length).is.greaterThan(0);",
+									"});",
+									"",
+									"const firstTransaction = jsonData[0];",
+									"",
+									"pm.test(\"Verify transaction.id\", function () { ",
+									"    pm.expect(typeof(firstTransaction.id)).is.equal(\"number\");",
+									"});",
+									"",
+									"pm.test(\"Verify transaction.value\", function () { ",
+									"    pm.expect(typeof(firstTransaction.value)).is.equal(\"number\");",
+									"});",
+									"",
+									"pm.test(\"Verify transaction.processed_at\", function () { ",
+									"    pm.expect(typeof(firstTransaction.processed_at)).is.equal(\"string\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{address}}/accounts/{{account_id}}/transactions?min_date=2020-01-01&max_date=2020-06-01",
+							"protocol": "http",
+							"host": [
+								"{{address}}"
+							],
+							"path": [
+								"accounts",
+								"{{account_id}}",
+								"transactions"
+							],
+							"query": [
+								{
+									"key": "min_date",
+									"value": "2020-01-01"
+								},
+								{
+									"key": "max_date",
+									"value": "2020-06-01"
+								}
+							]
+						},
+						"description": "This request takes for granted:\n1. there is not a company named \"Newton Labs\";\n2. industry named \"Information Technology\" is already known by the API;\n"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Accounts",
+			"item": [
+				{
+					"name": "Detail Account",
+					"item": [
+						{
+							"name": "Detail account",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Status code",
+											"",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200); }",
+											");",
+											"",
+											"// Body",
+											"var jsonData = pm.response.json(); ",
+											"",
+											"pm.test(\"Verify balance\", function () { ",
+											"    pm.expect(jsonData.balance).is.equal(1234.23);",
+											"});",
+											"",
+											"pm.test(\"Verify max_daily_withdrawal\", function () { ",
+											"    pm.expect(jsonData.max_daily_withdrawal).is.equal(100.02);",
+											"});",
+											"",
+											"pm.test(\"Verify is_active\", function () { ",
+											"    pm.expect(jsonData.is_active).is.equal(true);",
+											"});",
+											"",
+											"pm.test(\"Verify created_at\", function () { ",
+											"    pm.expect(jsonData.created_at).is.equal(\"2021-05-08T01:56:12.488778\");",
+											"});",
+											"",
+											"pm.test(\"Verify created_at\", function () { ",
+											"    pm.expect(jsonData.person_id).is.equal(1);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{address}}/accounts/1",
+									"protocol": "http",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"accounts",
+										"1"
+									]
+								},
+								"description": "This request takes for granted:\n1. there is not a company named \"Newton Labs\";\n2. industry named \"Information Technology\" is already known by the API;\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Detail account - not found",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Status code",
+											"",
+											"pm.test(\"Status code is 404\", function () {",
+											"    pm.response.to.have.status(404); }",
+											");",
+											"",
+											"// Body",
+											"var jsonData = pm.response.json(); ",
+											"",
+											"pm.test(\"Verify error message\", function () { ",
+											"    const expectedErrorMessage = \"Account not found by {'id': 3123123213}\";",
+											"    pm.expect(jsonData.detail).is.equal(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{address}}/accounts/3123123213",
+									"protocol": "http",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"accounts",
+										"3123123213"
+									]
+								},
+								"description": "This request takes for granted:\n1. there is not a company named \"Newton Labs\";\n2. industry named \"Information Technology\" is already known by the API;\n"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Update Account",
+					"item": [
+						{
+							"name": "Update account",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Status code",
+											"",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200); }",
+											");",
+											"",
+											"// Body",
+											"var jsonData = pm.response.json(); ",
+											"",
+											"pm.test(\"Verify is_active\", function () { ",
+											"    pm.expect(jsonData.is_active).is.equal(false);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"is_active\": false\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{address}}/accounts/1",
+									"protocol": "http",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"accounts",
+										"1"
+									]
+								},
+								"description": "This request takes for granted:\n1. there is not a company named \"Newton Labs\";\n2. industry named \"Information Technology\" is already known by the API;\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Update account - not found Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Status code",
+											"",
+											"pm.test(\"Status code is 404\", function () {",
+											"    pm.response.to.have.status(404); }",
+											");",
+											"",
+											"// Body",
+											"var jsonData = pm.response.json(); ",
+											"",
+											"pm.test(\"Verify error message\", function () { ",
+											"    const expectedErrorMessage = \"Account not found by {'id': 3123123213}\";",
+											"    pm.expect(jsonData.detail).is.equal(expectedErrorMessage);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"is_active\": false\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{address}}/accounts/3123123213",
+									"protocol": "http",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"accounts",
+										"3123123213"
+									]
+								},
+								"description": "This request takes for granted:\n1. there is not a company named \"Newton Labs\";\n2. industry named \"Information Technology\" is already known by the API;\n"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Create Account",
+					"item": [
+						{
+							"name": "Create account",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Status code",
+											"",
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201); }",
+											");",
+											"",
+											"// Body",
+											"var jsonData = pm.response.json(); ",
+											"pm.test(\"Verify id\", function () { ",
+											"    pm.expect(typeof(jsonData.id)).is.equal(\"number\");",
+											"});",
+											"",
+											"pm.test(\"Verify balance\", function () { ",
+											"    pm.expect(jsonData.balance).is.equal(1234.23);",
+											"});",
+											"",
+											"pm.test(\"Verify max_daily_withdrawal\", function () { ",
+											"    pm.expect(jsonData.max_daily_withdrawal).is.equal(100.02);",
+											"});",
+											"",
+											"pm.test(\"Verify is_active\", function () { ",
+											"    pm.expect(jsonData.is_active).is.true;",
+											"});",
+											"",
+											"pm.test(\"Verify person_id\", function () { ",
+											"    pm.expect(jsonData.person_id).is.equal(1);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"balance\": 1234.23,\n    \"max_daily_withdrawal\": 100.02,\n    \"is_active\": true,\n    \"person_id\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{address}}/accounts",
+									"protocol": "http",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"accounts"
+									]
+								},
+								"description": "This request takes for granted:\n1. there is not a company named \"Newton Labs\";\n2. industry named \"Information Technology\" is already known by the API;\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Create account - validate decimal",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Status code",
+											"",
+											"pm.test(\"Status code is 422\", function () {",
+											"    pm.response.to.have.status(422); }",
+											");",
+											"",
+											"// Body",
+											"var jsonData = pm.response.json(); ",
+											"pm.test(\"Verify balance error message\", function () { ",
+											"    const errorMessage = jsonData.detail[0].msg;",
+											"    pm.expect(errorMessage).is.equal(\"ensure that there are no more than 2 decimal places\")",
+											"});",
+											"",
+											"",
+											"pm.test(\"Verify max_daily_withdrawal error message\", function () { ",
+											"    const errorMessage = jsonData.detail[1].msg;",
+											"    pm.expect(errorMessage).is.equal(\"ensure that there are no more than 2 decimal places\")",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"balance\": 1234.236,\n    \"max_daily_withdrawal\": 321.13213,\n    \"person_id\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{address}}/accounts",
+									"protocol": "http",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"accounts"
+									]
+								},
+								"description": "This request takes for granted:\n1. there is not a company named \"Newton Labs\";\n2. industry named \"Information Technology\" is already known by the API;\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Create account - person not found",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Status code",
+											"",
+											"pm.test(\"Status code is 422\", function () {",
+											"    pm.response.to.have.status(422); }",
+											");",
+											"",
+											"// Body",
+											"var jsonData = pm.response.json(); ",
+											"pm.test(\"Verify error message\", function () { ",
+											"    const expectedErrorMessage = \"Person not found by {'id': 3123123}\";",
+											"    pm.expect(jsonData.detail).is.equal(expectedErrorMessage);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"balance\": 45.3,\n    \"max_daily_withdrawal\": 13.13,\n    \"person_id\": 3123123\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{address}}/accounts",
+									"protocol": "http",
+									"host": [
+										"{{address}}"
+									],
+									"path": [
+										"accounts"
+									]
+								},
+								"description": "This request takes for granted:\n1. there is not a company named \"Newton Labs\";\n2. industry named \"Information Technology\" is already known by the API;\n"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
