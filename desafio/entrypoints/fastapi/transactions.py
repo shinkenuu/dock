@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 
-from desafio.domain.controllers.schemas.transactions import CreatableTransaction
-from desafio.domain.controllers import transactions as transaction_controllers
+from desafio.domain.use_cases.schemas.transactions import CreatableTransaction
+from desafio.domain.use_cases import transactions as transaction_use_cases
 from desafio.domain.exceptions.accounts import AccountNotFound
 from desafio.domain.exceptions.transactions import (
     DailyWithdrawalLimitReached,
@@ -16,7 +16,7 @@ async def create_transaction(
     account_id: int, creatable_transaction: CreatableTransaction
 ):
     try:
-        created_transaction = transaction_controllers.create_transaction(
+        created_transaction = transaction_use_cases.create_transaction(
             account_id=account_id,
             creatable_transaction=creatable_transaction,
         )
@@ -38,7 +38,7 @@ async def create_transaction(
 @app.get("/accounts/{account_id}/transactions")  # type: ignore
 async def list_transactions(account_id: int):
     try:
-        listed_transactions = transaction_controllers.list_transactions(
+        listed_transactions = transaction_use_cases.list_transactions(
             account_id=account_id
         )
 

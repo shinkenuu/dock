@@ -1,4 +1,4 @@
-from desafio.domain.controllers.schemas.accounts import (
+from desafio.domain.use_cases.schemas.accounts import (
     CreatableAccount,
     ExposableAccount,
     UpdatableAccount,

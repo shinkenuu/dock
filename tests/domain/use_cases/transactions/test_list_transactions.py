@@ -3,7 +3,7 @@ from datetime import datetime
 from freezegun import freeze_time
 import pytest
 
-from desafio.domain.controllers.transactions import (
+from desafio.domain.use_cases.transactions import (
     list_transactions,
     TransactionInteractor,
     ExposableTransaction,

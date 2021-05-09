@@ -1,6 +1,6 @@
 import pytest
 
-from desafio.domain.controllers.accounts import (
+from desafio.domain.use_cases.accounts import (
     update,
     AccountInteractor,
     UpdatableAccount,

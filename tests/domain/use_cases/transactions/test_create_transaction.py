@@ -4,7 +4,7 @@ from decimal import Decimal
 from freezegun import freeze_time
 import pytest
 
-from desafio.domain.controllers.transactions import (
+from desafio.domain.use_cases.transactions import (
     create_transaction,
     TransactionInteractor,
     CreatableTransaction,

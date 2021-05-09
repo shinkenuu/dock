@@ -4,7 +4,7 @@ from freezegun import freeze_time
 import pytest
 
 from desafio.domain.exceptions.accounts import AccountNotFound
-from desafio.domain.controllers.accounts import (
+from desafio.domain.use_cases.accounts import (
     detail,
     AccountInteractor,
     ExposableAccount,

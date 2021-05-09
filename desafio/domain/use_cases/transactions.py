@@ -1,6 +1,6 @@
 from typing import List
 
-from desafio.domain.controllers.schemas.transactions import (
+from desafio.domain.use_cases.schemas.transactions import (
     CreatableTransaction,
     ExposableTransaction,
 )
